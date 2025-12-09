@@ -1,0 +1,20 @@
+.form-control {
+  border: 1px solid gray !important;
+}
+
+/* Toastr custom colors */
+.ngx-toastr.toast-success {
+  background-color: #51cf66;
+}
+
+.ngx-toastr.toast-error {
+  background-color: #ff6b6b;
+}
+
+.ngx-toastr.toast-warning {
+  background-color: #ffd93d;
+}
+
+.ngx-toastr.toast-info {
+  background-color: #339af0;
+}
