@@ -2,7 +2,7 @@ import { Component, signal } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { EmployeeModel } from './model/employee';
-//import { ToastrModule, ToastrService } from 'ngx-toastr';
+//import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-root',
@@ -29,7 +29,6 @@ export class App {
   // Genders for radio inputs
   genders: string[] = ['Male', 'Female', 'Other'];
 
-  //constructor(private toastr: ToastrService) {
   constructor() {
     this.createForm();
     //debugger;
@@ -38,6 +37,25 @@ export class App {
       const empDataArray = JSON.parse(oldData);
       this.employeeList = empDataArray;
     }
+  }
+
+  // Toast notification method
+  private showToast(message: string, type: 'success' | 'error' | 'info' | 'warning') {
+    const alertClass = {
+      success: 'alert-success',
+      error: 'alert-danger',
+      info: 'alert-info',
+      warning: 'alert-warning',
+    }[type];
+
+    const toast = document.createElement('div');
+    toast.className = `alert ${alertClass} position-fixed top-0 end-0 m-3`;
+    toast.style.zIndex = '9999';
+    toast.style.minWidth = '300px';
+    toast.textContent = message;
+    document.body.appendChild(toast);
+
+    setTimeout(() => toast.remove(), 3000);
   }
 
   // Reset form
@@ -80,7 +98,7 @@ export class App {
       this.employeeList.unshift(this.employeeForm.value);
     }
     localStorage.setItem('employeeData', JSON.stringify(this.employeeList));
-    //this.toastr.success('Employee saved successfully!', 'Success');
+    this.showToast('Employee saved successfully!', 'success');
     this.onReset();
   }
 
@@ -143,7 +161,7 @@ export class App {
       record.Pincode = this.employeeForm.controls['Pincode'].value;
     }
     localStorage.setItem('employeeData', JSON.stringify(this.employeeList));
-    //this.toastr.info('Employee updated!', 'Updated');
+    this.showToast('Employee updated!', 'info');
     this.onReset();
   }
 
@@ -154,7 +172,7 @@ export class App {
       const index = this.employeeList.findIndex((m) => m.empId == id);
       this.employeeList.splice(index, 1);
       localStorage.setItem('employeeData', JSON.stringify(this.employeeList));
-      //this.toastr.error('Employee deleted!', 'Deleted');
+      this.showToast('Employee deleted!', 'error');
       this.changePage(1); // Reset to first page after delete
     }
   }
