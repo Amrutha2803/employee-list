@@ -1,4 +1,4 @@
-<div class="row">
+<!--<div class="row">
   <div class="col-8">
     <div class="card">
       <div class="card-header bg-success text-white">
@@ -6,7 +6,7 @@
       </div>
       <div class="card-body">
         <div class="row mb-2">
-          <div class="col-md-3">
+          <div class="col-md-4 offset-md-8">
             <label for="search">Search</label>
             <input
               type="text"
@@ -30,9 +30,9 @@
                   <th (click)="onSort('Deparment')">Deparment</th>
                   <th (click)="onSort('city')">City</th>
                   <th (click)="onSort('State')">State</th>
-                  <th (click)="onSort('Pincode')">Pincode</th>
-                  <!--<th (click)="onSort('Address')">Address</th>-->
-                  <th class="text-center">Actions</th>
+                  <th (click)="onSort('Pincode')">Pincode</th>-->
+<!--<th (click)="onSort('Address')">Address</th>-->
+<!--  <th class="text-center">Actions</th>
                 </tr>
               </thead>
               <tbody>
@@ -46,9 +46,9 @@
                   <td>{{ item.Department }}</td>
                   <td>{{ item.city }}</td>
                   <td>{{ item.state }}</td>
-                  <td>{{ item.Pincode }}</td>
-                  <!-- <td>{{ item.Address }}</td>-->
-                  <td class="text-center">
+                  <td>{{ item.Pincode }}</td>-->
+<!-- <td>{{ item.Address }}</td>-->
+<!--<td class="text-center">
                     <button class="btn btn-primary btn-sm" type="button" (click)="onEdit(item)">
                       Edit
                     </button>
@@ -198,13 +198,13 @@
                 <small>Pincode must be at least 6 digits</small>
                 } }
               </div>
-            </div>
+            </div>-->
 
-            <!--<div class="col-12">
+<!--<div class="col-12">
               <label for="address">Address</label>
               <textarea id="address" formControlName="Address" class="form-control"></textarea>
             </div>-->
-          </div>
+<!--</div>
           <div class="row">
             <div class="col-6 text-center mt-3">
               <button class="btn btn-secondary" type="button" (click)="onReset()">Reset</button>
@@ -231,10 +231,11 @@
               }
             </div>
           </div>
-        </form>
       </div>
     </div>
   </div>
-</div>
+  </div>
+</div>-->
 
+<router-outlet />
 <router-outlet />

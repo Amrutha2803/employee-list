@@ -1,0 +1,212 @@
+<div class="container-fluid mt-4">
+  <div class="row g-3">
+    <div class="col-lg-8 offset-lg-2 col-12">
+      <div class="card">
+        <div
+          class="card-header bg-success text-white d-flex justify-content-between align-items-center"
+        >
+          <h5 class="mb-0">
+            @if(mode === 'view') { View Employee } @else if(mode === 'edit') { Edit Employee } @else
+            { Add New Employee }
+          </h5>
+          <button class="btn btn-sm btn-light" type="button" (click)="goBack()">Back</button>
+        </div>
+        <div class="card-body">
+          <form [formGroup]="employeeForm">
+            <!-- Step 1: Personal Info -->
+            @if(currentStep === 1 || mode === 'view') {
+            <div class="row">
+              <div class="col-12">
+                <label for="name">Name</label>
+                <input
+                  type="text"
+                  id="name"
+                  formControlName="name"
+                  class="form-control"
+                  [disabled]="mode === 'view'"
+                />
+                @if(employeeForm.controls['name'].touched) {
+                @if(employeeForm.controls['name'].errors?.['required']) {
+                <div class="text-danger"><small>Name is required</small></div>
+                } @if(employeeForm.controls['name'].errors?.['minlength']) {
+                <div class="text-danger"><small>Name must be at least 2 characters</small></div>
+                } @if(employeeForm.controls['name'].errors?.['maxlength']) {
+                <div class="text-danger"><small>Name must be at most 50 characters</small></div>
+                } @if(employeeForm.controls['name'].errors?.['pattern']) {
+                <div class="text-danger">
+                  <small>Name can contain only letters, spaces, hyphens or apostrophes</small>
+                </div>
+                } }
+              </div>
+
+              <div class="col-12 mt-2">
+                <label class="d-block">Gender</label>
+                <div>
+                  @for (g of genders; track g) {
+                  <div class="form-check form-check-inline">
+                    <input
+                      class="form-check-input"
+                      type="radio"
+                      id="gender-{{ g }}"
+                      [value]="g"
+                      formControlName="gender"
+                      [disabled]="mode === 'view'"
+                    />
+                    <label class="form-check-label" for="gender-{{ g }}">{{ g }}</label>
+                  </div>
+                  }
+                </div>
+              </div>
+
+              <div class="col-6 mt-2">
+                <label for="emailid">Email-Id</label>
+                <input
+                  type="text"
+                  id="emailid"
+                  formControlName="emailId"
+                  class="form-control"
+                  [disabled]="mode === 'view'"
+                />
+                @if(employeeForm.controls['emailId'].touched) {
+                @if(employeeForm.controls['emailId'].errors?.['required']) {
+                <div class="text-danger"><small>Email is required</small></div>
+                } @if(employeeForm.controls['emailId'].errors?.['email']) {
+                <div class="text-danger"><small>Invalid Email</small></div>
+                } }
+              </div>
+
+              <div class="col-6 mt-2">
+                <label for="contactNo">Contact No</label>
+                <input
+                  type="text"
+                  id="contactNo"
+                  formControlName="contactNo"
+                  class="form-control"
+                  [disabled]="mode === 'view'"
+                />
+                @if(employeeForm.controls['contactNo'].touched) {
+                @if(employeeForm.controls['contactNo'].errors?.['required']) {
+                <div class="text-danger"><small>Contact number is required</small></div>
+                } @if(employeeForm.controls['contactNo'].errors?.['invalidPhone']) {
+                <div class="text-danger">
+                  <small>
+                    Invalid phone.provide 10–15 digits. Optional +country code, spaces or dashes
+                    allowed.
+                  </small>
+                </div>
+                } }
+              </div>
+
+              <div class="col-12 mt-3 text-end">
+                @if(mode !== 'view') {
+                <button class="btn btn-primary" type="button" (click)="nextStep()">Next</button>
+                }
+              </div>
+            </div>
+            }
+
+            <!-- Step 2: Address & Department -->
+            @if(currentStep === 2 || mode === 'view') {
+            <div class="row">
+              <div class="col-6">
+                <label for="department">Department</label>
+                <select
+                  id="department"
+                  formControlName="Department"
+                  class="form-select"
+                  [disabled]="mode === 'view'"
+                >
+                  <option value="">Select Department</option>
+                  @for (d of departments; track d) {
+                  <option [value]="d">{{ d }}</option>
+                  }
+                </select>
+              </div>
+
+              <div class="col-6">
+                <label for="city">City</label>
+                <input
+                  type="text"
+                  id="city"
+                  formControlName="city"
+                  class="form-control"
+                  [disabled]="mode === 'view'"
+                />
+              </div>
+
+              <div class="col-6 mt-2">
+                <label for="state">State</label>
+                <input
+                  type="text"
+                  id="state"
+                  formControlName="state"
+                  class="form-control"
+                  [disabled]="mode === 'view'"
+                />
+              </div>
+
+              <div class="col-6 mt-2">
+                <label for="pincode">Pincode</label>
+                <input
+                  type="text"
+                  id="pincode"
+                  formControlName="Pincode"
+                  class="form-control"
+                  [disabled]="mode === 'view'"
+                />
+                @if(employeeForm.controls['Pincode'].touched) {
+                @if(employeeForm.controls['Pincode'].errors?.['required']) {
+                <div class="text-danger"><small>Pincode is required</small></div>
+                } @if(employeeForm.controls['Pincode'].errors?.['minlength']) {
+                <div class="text-danger"><small>Pincode must be 6+ digits</small></div>
+                } }
+              </div>
+
+              <div class="col-12 mt-2">
+                <label for="address">Address</label>
+                <textarea
+                  id="address"
+                  formControlName="Address"
+                  class="form-control"
+                  [disabled]="mode === 'view'"
+                ></textarea>
+              </div>
+
+              <div class="col-12 mt-3 d-flex justify-content-between">
+                @if(mode !== 'view') {
+                <button class="btn btn-secondary" type="button" (click)="prevStep()">
+                  Previous
+                </button>
+                }
+                <div>
+                  @if(mode === 'view') {
+                  <button class="btn btn-secondary" type="button" (click)="goBack()">Back</button>
+                  } @else if(mode === 'edit') {
+                  <button
+                    class="btn btn-warning"
+                    type="button"
+                    (click)="onUpdate()"
+                    [disabled]="!employeeForm.valid"
+                  >
+                    Update
+                  </button>
+                  } @else {
+                  <button
+                    class="btn btn-success"
+                    type="button"
+                    (click)="onSave()"
+                    [disabled]="!employeeForm.valid"
+                  >
+                    Save
+                  </button>
+                  }
+                </div>
+              </div>
+            </div>
+            }
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

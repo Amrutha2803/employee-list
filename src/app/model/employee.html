@@ -1,0 +1,119 @@
+<div class="row">
+  <div class="col-12">
+    <div class="card">
+      <div class="card-header bg-success text-white">
+        <h6 class="mb-0">Employee Details</h6>
+      </div>
+      <div class="card-body">
+        <div class="row mb-2">
+          <div class="col-md-4 offset-md-8">
+            <label for="search">Search</label>
+            <input
+              type="text"
+              id="search"
+              class="form-control"
+              placeholder="Search by Name/Deparment"
+              (input)="onSearch($event)"
+            />
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-12">
+            <table class="table table-bordered">
+              <thead>
+                <tr>
+                  <th (click)="onSort('srno')">Sr No</th>
+                  <th (click)="onSort('name')">Name</th>
+                  <th (click)="onSort('gender')">Gender</th>
+                  <th (click)="onSort('emailId')">emailId</th>
+                  <th (click)="onSort('contactNo')">Contact No</th>
+                  <th (click)="onSort('Deparment')">Deparment</th>
+                  <th (click)="onSort('city')">City</th>
+                  <th (click)="onSort('State')">State</th>
+                  <th (click)="onSort('Pincode')">Pincode</th>
+                  <!--<th (click)="onSort('Address')">Address</th>-->
+                  <th class="text-center">Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                @for (item of paginatedEmployees(); track $index) {
+                <tr>
+                  <td>{{ $index + 1 }}</td>
+                  <td>{{ item.name }}</td>
+                  <td>{{ item.gender }}</td>
+                  <td>{{ item.emailId }}</td>
+                  <td>{{ item.contactNo }}</td>
+                  <td>{{ item.Department }}</td>
+                  <td>{{ item.city }}</td>
+                  <td>{{ item.state }}</td>
+                  <td>{{ item.Pincode }}</td>
+                  <!-- <td>{{ item.Address }}</td>-->
+                  <td class="text-center">
+                    <button class="btn btn-primary btn-sm" type="button" (click)="onEdit(item)">
+                      Edit
+                    </button>
+                    <button
+                      class="btn btn-danger btn-sm mx-2"
+                      type="button"
+                      (click)="onDelete(item.empId)"
+                    >
+                      Delete
+                    </button>
+                  </td>
+                </tr>
+                } @if ((employeeList || []).length === 0) {
+                <tr>
+                  <td colspan="9" class="text-center">No records</td>
+                </tr>
+                }
+              </tbody>
+            </table>
+            <div class="d-flex align-items-center justify-content-between my-2">
+              <div class="d-flex align-items-center">
+                <label class="me-2 mb-0">Show</label>
+                <select class="form-select form-select-sm w-auto" (change)="changePageSize($event)">
+                  @for (s of pageSizes; track s) {
+                  <option [value]="s" [selected]="s === pageSize">
+                    {{ s }}
+                  </option>
+                  }
+                </select>
+                <label class="ms-2 mb-0">entries</label>
+              </div>
+
+              <nav aria-label="Page navigation">
+                <ul class="pagination pagination-sm mb-0">
+                  <li class="page-item" [class.disabled]="currentPage === 1">
+                    <button
+                      class="page-link"
+                      (click)="changePage(currentPage - 1)"
+                      [disabled]="currentPage === 1"
+                    >
+                      Previous
+                    </button>
+                  </li>
+
+                  @for (p of pages(); track p) {
+                  <li class="page-item" [class.active]="p === currentPage">
+                    <button class="page-link" (click)="changePage(p)">{{ p }}</button>
+                  </li>
+                  }
+
+                  <li class="page-item" [class.disabled]="currentPage === totalPages()">
+                    <button
+                      class="page-link"
+                      (click)="changePage(currentPage + 1)"
+                      [disabled]="currentPage === totalPages()"
+                    >
+                      Next
+                    </button>
+                  </li>
+                </ul>
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

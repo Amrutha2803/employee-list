@@ -167,12 +167,10 @@ export class App {
 
   // Delete record
   onDelete(id: number) {
-    const isDelete = confirm('Are you sure to delete this record?');
-    if (isDelete) {
-      const index = this.employeeList.findIndex((m) => m.empId == id);
+    const index = this.employeeList.findIndex((m) => m.empId == id);
+    if (index > -1) {
       this.employeeList.splice(index, 1);
       localStorage.setItem('employeeData', JSON.stringify(this.employeeList));
-      this.showToast('Employee deleted!', 'error');
       this.changePage(1); // Reset to first page after delete
     }
   }
