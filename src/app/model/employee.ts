@@ -4,6 +4,8 @@ export class EmployeeModel {
   gender: string;
   city: string;
   state: string;
+  designation: string;
+  country: string;
   emailId: string;
   contactNo: string;
   Department: string;
@@ -16,6 +18,8 @@ export class EmployeeModel {
     this.gender = '';
     this.city = '';
     this.state = '';
+    this.designation = '';
+    this.country = '';
     this.emailId = '';
     this.contactNo = '';
     this.Department = '';

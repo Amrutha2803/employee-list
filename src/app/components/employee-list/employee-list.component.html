@@ -33,13 +33,18 @@
                         Sr No
                         <span *ngIf="lastSortedColumn === 'srno'">{{ ascending ? '▲' : '▼' }}</span>
                       </th>
+                      <th (click)="onSort('empId')" style="cursor: pointer; user-select: none">
+                        Employee ID
+                        <span *ngIf="lastSortedColumn === 'empId'">{{
+                          ascending ? '▲' : '▼'
+                        }}</span>
+                      </th>
                       <th>Name</th>
                       <th>Gender</th>
                       <th>Email</th>
                       <th>Contact</th>
                       <th>Department</th>
-                      <th>City</th>
-                      <th>State</th>
+                      <th>Designation</th>
                       <th class="text-center">Actions</th>
                     </tr>
                   </thead>
@@ -47,13 +52,13 @@
                     @for (item of paginatedEmployees(); track $index) {
                     <tr>
                       <td>{{ (currentPage - 1) * pageSize + $index + 1 }}</td>
+                      <td>{{ item.empId || '-' }}</td>
                       <td>{{ item.name }}</td>
                       <td>{{ item.gender }}</td>
                       <td>{{ item.emailId }}</td>
                       <td>{{ item.contactNo }}</td>
                       <td>{{ item.Department }}</td>
-                      <td>{{ item.city }}</td>
-                      <td>{{ item.state }}</td>
+                      <td>{{ item.designation || '-' }}</td>
                       <td class="text-center">
                         <button
                           class="btn btn-info btn-sm me-2"

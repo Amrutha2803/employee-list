@@ -22,6 +22,17 @@ export class EmployeeFormComponent implements OnInit {
 
   departments: string[] = ['HR', 'Finance', 'Engineering', 'Marketing', 'Sales', 'IT'];
   genders: string[] = ['Male', 'Female', 'Other'];
+  countries: string[] = [
+    'India',
+    'United States',
+    'United Kingdom',
+    'Canada',
+    'Australia',
+    'Germany',
+    'France',
+    'Singapore',
+  ];
+  designations: string[] = ['Intern', 'Junior', 'Senior', 'Lead', 'Manager', 'Director'];
 
   mode: 'add' | 'edit' | 'view' = 'add';
   currentStep = 1;
@@ -94,10 +105,13 @@ export class EmployeeFormComponent implements OnInit {
       ]),
       gender: new FormControl(this.employeeObject.gender),
       city: new FormControl(this.employeeObject.city),
+      country: new FormControl(this.employeeObject.country, [Validators.required]),
+      designation: new FormControl(this.employeeObject.designation, [Validators.required]),
       state: new FormControl(this.employeeObject.state),
       emailId: new FormControl(this.employeeObject.emailId, [
         Validators.required,
         Validators.email,
+        Validators.pattern(/^[^\s@]+@[^\s@]+\.com$/i),
       ]),
       // Contact number validation: required and allow optional country code and separators
       contactNo: new FormControl(this.employeeObject.contactNo, [
@@ -111,19 +125,25 @@ export class EmployeeFormComponent implements OnInit {
         Validators.minLength(6),
       ]),
     });
+    // For new employees show an empty id (will be assigned on save)
+    if (this.mode === 'add') {
+      this.employeeForm.controls['empId'].setValue('');
+    }
+  }
+
+  // Compute the next available employee id (max existing id + 1)
+  getNextId(): number {
+    const max = this.employeeList.reduce((m, e) => Math.max(m, e.empId ?? 0), 0);
+    return max + 1;
   }
 
   onSave() {
     this.employeeForm.markAllAsTouched();
     if (this.employeeForm.valid) {
-      const oldData = localStorage.getItem('employeeData');
-      if (oldData != null) {
-        const empDataArray = JSON.parse(oldData);
-        this.employeeForm.controls['empId'].setValue(empDataArray.length + 1);
-        this.employeeList.unshift(this.employeeForm.value);
-      } else {
-        this.employeeList.unshift(this.employeeForm.value);
-      }
+      // assign a stable unique id using existing records
+      const nextId = this.getNextId();
+      this.employeeForm.controls['empId'].setValue(nextId);
+      this.employeeList.unshift(this.employeeForm.value);
       localStorage.setItem('employeeData', JSON.stringify(this.employeeList));
       this.showToast('Employee saved successfully!', 'success');
       this.goBack();
@@ -139,6 +159,8 @@ export class EmployeeFormComponent implements OnInit {
       if (record != undefined) {
         record.name = this.employeeForm.controls['name'].value;
         record.city = this.employeeForm.controls['city'].value;
+        record.country = this.employeeForm.controls['country'].value;
+        record.designation = this.employeeForm.controls['designation'].value;
         record.state = this.employeeForm.controls['state'].value;
         record.contactNo = this.employeeForm.controls['contactNo'].value;
         record.Department = this.employeeForm.controls['Department'].value;
@@ -176,7 +198,7 @@ export class EmployeeFormComponent implements OnInit {
     if (!this.employeeForm) return false;
     const stepRequired: Record<number, string[]> = {
       1: ['name', 'emailId', 'contactNo'],
-      2: ['Department', 'city', 'state', 'Pincode'],
+      2: ['Department', 'city', 'country', 'designation', 'state', 'Pincode'],
     };
     const controls = stepRequired[step] || [];
     let valid = true;

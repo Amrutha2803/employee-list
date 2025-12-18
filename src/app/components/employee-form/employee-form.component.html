@@ -16,6 +16,17 @@
             <!-- Step 1: Personal Info -->
             @if(currentStep === 1 || mode === 'view') {
             <div class="row">
+              <div class="col-12 mb-2">
+                <label for="empid">Employee ID</label>
+                <input
+                  type="text"
+                  id="empid"
+                  formControlName="empId"
+                  class="form-control"
+                  readonly
+                  placeholder="Auto-generated"
+                />
+              </div>
               <div class="col-12">
                 <label for="name">Name</label>
                 <input
@@ -72,6 +83,8 @@
                 <div class="text-danger"><small>Email is required</small></div>
                 } @if(employeeForm.controls['emailId'].errors?.['email']) {
                 <div class="text-danger"><small>Invalid Email</small></div>
+                }@if(employeeForm.controls['emailId'].errors?.['pattern']) {
+                <div class="text-danger"><small>Invalid Email.Requires.com</small></div>
                 } }
               </div>
 
@@ -124,6 +137,25 @@
               </div>
 
               <div class="col-6">
+                <label for="designation">Designation</label>
+                <select
+                  id="designation"
+                  formControlName="designation"
+                  class="form-select"
+                  [disabled]="mode === 'view'"
+                >
+                  <option value="">Select Designation</option>
+                  @for (ds of designations; track ds) {
+                  <option [value]="ds">{{ ds }}</option>
+                  }
+                </select>
+                @if(employeeForm.controls['designation'].touched) {
+                @if(employeeForm.controls['designation'].errors?.['required']) {
+                <div class="text-danger"><small>Designation is required</small></div>
+                } }
+              </div>
+
+              <div class="col-6">
                 <label for="city">City</label>
                 <input
                   type="text"
@@ -132,6 +164,25 @@
                   class="form-control"
                   [disabled]="mode === 'view'"
                 />
+              </div>
+
+              <div class="col-6">
+                <label for="country">Country</label>
+                <select
+                  id="country"
+                  formControlName="country"
+                  class="form-select"
+                  [disabled]="mode === 'view'"
+                >
+                  <option value="">Select Country</option>
+                  @for (c of countries; track c) {
+                  <option [value]="c">{{ c }}</option>
+                  }
+                </select>
+                @if(employeeForm.controls['country'].touched) {
+                @if(employeeForm.controls['country'].errors?.['required']) {
+                <div class="text-danger"><small>Country is required</small></div>
+                } }
               </div>
 
               <div class="col-6 mt-2">
